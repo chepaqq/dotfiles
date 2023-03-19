@@ -138,12 +138,5 @@ return {
       end,
     },
   },
-  {
-    "mattn/vim-gist",
-    dependencies = { "mattn/webapi-vim" },
-    cmd = { "Gist" },
-    config = function()
-      vim.g.gist_open_browser_after_post = 1
-    end,
-  },
+  { "rawnly/gist.nvim", cmd = { "CreateGist", "CreateGistFromFile" } },
 }
