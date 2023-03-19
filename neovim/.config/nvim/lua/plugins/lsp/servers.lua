@@ -72,9 +72,6 @@ local opts = {
         hint = {
           enable = true,
         },
-        format = {
-          enable = false
-        },
         diagnostics = {
           globals = { "vim" },
         },
