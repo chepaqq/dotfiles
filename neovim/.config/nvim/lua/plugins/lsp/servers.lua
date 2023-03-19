@@ -103,7 +103,7 @@ local servers = {
 }
 
 function M.setup()
-  local lspconfig = require"lspconfig"
+  local lspconfig = require("lspconfig")
   for _, lsp in ipairs(servers) do
     if lsp == "clangd" then
       lspconfig.clangd.setup(opts.clangd)
