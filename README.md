@@ -1,5 +1,5 @@
-Dotfiles
-========
+# Dotfiles
+
 This repo contains dotfiles for software that I use everyday.
 
 - beets - media organizer
@@ -8,7 +8,7 @@ This repo contains dotfiles for software that I use everyday.
 - dwm - suckless window manager
 - mpd and ncmpcpp - music player
 - mpv - video player
-- neovim - text editor
+- neovim and emacs - text editors
 - nsxiv - image viewer
 - pinentry-dmenu - pinentry program
 - st - suckless terminal emulator
@@ -18,7 +18,10 @@ This repo contains dotfiles for software that I use everyday.
 - zsh and bash - unix shells
 
 ## Usage
+
 Use GNU stow to symlink dotfiles into certain directory:
+
 ```
 stow --target=TARGET */ # to symlink everything
 stow --target=TARGER package # to symlink specific package
+```
