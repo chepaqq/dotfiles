@@ -12,7 +12,7 @@ mpd/.config/mpd/*
 mpv/.config/mpv/watch_later/*
 ncmpcpp/.config/ncmpcpp/error.log
 neovim/.config/nvim/lazy-lock.json
-neovim/.config/nvim/.luarc.json
+neovim/.config/nvim/lua/.luarc.json
 runit/.config/runit/runsvdir/*
 runit/.config/runit/sv/*/log/supervise/*
 runit/.config/runit/sv/*/supervise/*
