@@ -1,6 +1,7 @@
 return {
   "nvim-lua/plenary.nvim",
   "nvim-tree/nvim-web-devicons",
+  { "tpope/vim-repeat", event = "VeryLazy" },
   { "nacro90/numb.nvim", event = "BufReadPre", config = true },
   {
     "NvChad/nvim-colorizer.lua",
