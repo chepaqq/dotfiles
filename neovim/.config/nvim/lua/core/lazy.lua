@@ -20,7 +20,7 @@ end
 
 local opts = {
   defaults = { lazy = true, version = nil },
-  install = { missing = true, colorscheme = { "tokyonight", "gruvbox" } },
+  install = { missing = true, colorscheme = { "gruvbox" } },
   performance = {
     cache = {
       enabled = true,
