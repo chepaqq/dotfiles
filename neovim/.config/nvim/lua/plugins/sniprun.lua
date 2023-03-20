@@ -1,7 +1,7 @@
 return {
   {
     "michaelb/sniprun",
-    enabled = false,
+    enabled = true,
     build = "bash ./install.sh",
     opts = {
       display = { "Terminal" },

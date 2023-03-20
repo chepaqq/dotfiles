@@ -20,6 +20,30 @@ vim.opt.pastetoggle = "<F2>"
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
 
+-- Quick save
+map("n", "<leader>s", "<cmd>w<CR>", { desc = "Save", noremap = true, silent = true })
+
+-- Close all windows
+map("n", "<leader>q", "<cmd>qa!<CR>", { desc = "Quit", noremap = true, silent = true })
+
+-- Clear highlighting
+map("n", "<ESC>", "<cmd>nohl<CR>", { desc = "Clear highlighting", noremap = true, silent = true })
+
+-- Fast reload config
+map("n", "<leader>R", "<cmd>so %<CR>", { desc = "Reload config", noremap = true, silent = true })
+
+-- Buffers movement
+map("n", "<leader>bd", "<Cmd>bd!<Cr>", { desc = "Close current buffer", noremap = true, silent = true })
+map("n", "<leader>bD", "<Cmd>%bd|e#|bd#<Cr>", { desc = "Delete all buffers", noremap = true, silent = true })
+map("n", "]b", "<Cmd>bnext<CR>", { desc = "Next buffer", noremap = true, silent = true })
+map("n", "[b", "<Cmd>bprevious<CR>", { desc = "Previous buffer", noremap = true, silent = true })
+map("n", "[B", "<Cmd>bfirst<CR>", { desc = "First buffer", noremap = true, silent = true })
+map("n", "]B", "<Cmd>blast<CR>", { desc = "Last buffer", noremap = true, silent = true })
+
+-- Change split orientation
+map("n", "<leader>tk", "<C-w>t<C-w>K", { desc = "Vertical to horizontal", noremap = true, silent = true })
+map("n", "<leader>th", "<C-w>t<C-w>H", { desc = "Horizontal to vertical", noremap = true, silent = true })
+
 -- Scrolling
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
@@ -31,8 +55,8 @@ map("n", "<C-k>", "<C-w>k")
 map("n", "<C-l>", "<C-w>l")
 
 -- Insert blank line
-map("n", "]<Space>", "o<Esc>")
-map("n", "[<Space>", "O<Esc>")
+map("n", "]<Space>", "o<Esc>", { desc = "Blank line after", noremap = true, silent = true })
+map("n", "[<Space>", "O<Esc>", { desc = "Blank line before", noremap = true, silent = true })
 
 -- Better indent
 map("v", "<", "<gv")

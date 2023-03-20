@@ -12,7 +12,7 @@ return {
   },
   {
     "numToStr/Comment.nvim",
-    keys = { "gc", "gcc", "gbc" },
+    keys = { "gcc", "gbc", { "gc", mode = "v" }, { "gb", mode = "v" } },
     config = function()
       require("Comment").setup({
         ignore = "^$",
@@ -29,7 +29,15 @@ return {
     end,
   },
 
-  { "simrat39/rust-tools.nvim", ft = "rust" },
+  {
+    "simrat39/rust-tools.nvim",
+    ft = "rust",
+    keys = {
+      { "<leader>ch", "<cmd>RustHoverActions<cr>", desc = "Hover Actions" },
+      { "<leader>cR", "<cmd>RustRunnables<cr>", desc = "Runnables" },
+      { "<leader>dl", "<cmd>RustDebuggables<cr>", desc = "Debuggales" },
+    },
+  },
 
   {
     "kylechui/nvim-surround",
@@ -60,16 +68,14 @@ return {
     ft = { "go", "gomod" },
   },
 
-  { "mbbill/undotree" },
-
   {
-    "tpope/vim-dadbod",
-    cmd = { "DBUIToggle", "DBUIFindBuffer", "DBUIRenameBuffer", "DBUILastQueryInfo" },
-    dependencies = {
-      "kristijanhusak/vim-dadbod-ui",
-      "kristijanhusak/vim-dadbod-completion",
+    "mbbill/undotree",
+    cmd = { "UndotreeToggle" },
+    keys = {
+      { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "UndoTree" },
     },
   },
+
   {
     "abecodes/tabout.nvim",
     event = "VeryLazy",

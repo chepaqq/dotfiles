@@ -148,6 +148,13 @@ return {
         end,
         desc = "Step Out",
       },
+      {
+        "<leader>dP",
+        function()
+          require("dap.ui.widgets").preview()
+        end,
+        desc = "Preview",
+      },
     },
     config = function(plugin, opts)
       require("nvim-dap-virtual-text").setup({

@@ -16,6 +16,7 @@ return {
     {
       "williamboman/mason.nvim",
       cmd = { "Mason", "MasonInstall", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
+      keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
       config = function()
         require("mason").setup()
       end,
@@ -26,6 +27,10 @@ return {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "TroubleClose", "Trouble", "TroubleRefresh" },
     config = true,
+    keys = {
+      { "<leader>cd", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics" },
+      { "<leader>cD", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics" },
+    },
   },
   {
     "glepnir/lspsaga.nvim",
@@ -41,6 +46,7 @@ return {
   },
   {
     "lvimuser/lsp-inlayhints.nvim",
+    event = "BufReadPre",
     config = function()
       require("lsp-inlayhints").setup()
       vim.api.nvim_create_augroup("LspAttach_inlayhints", {})

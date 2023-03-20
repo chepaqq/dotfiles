@@ -61,3 +61,5 @@ local opts = {
 
 -- Setup lazy.nvim
 lazy.setup("plugins", opts)
+
+vim.keymap.set("n", "<leader>zz", "<cmd>Lazy<cr>", { desc = "Manage plugins", noremap = true, silent = true })

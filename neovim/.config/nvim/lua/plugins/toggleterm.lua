@@ -5,7 +5,7 @@ return {
   },
   cmd = { "ToggleTerm", "TermExec" },
   opts = {
-    size = 20,
+    size = 15,
     hide_numbers = true,
     open_mapping = [[<C-\>]],
     shade_filetypes = {},
@@ -13,7 +13,7 @@ return {
     shading_factor = 0.3,
     start_in_insert = true,
     persist_size = true,
-    direction = "float",
+    direction = "horizontal",
     winbar = {
       enabled = false,
       name_formatter = function(term)

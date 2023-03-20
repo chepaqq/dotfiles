@@ -1,8 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
-  version = "0.1.1",
   cmd = "Telescope",
-  lazy = true,
   dependencies = {
     {
       "nvim-telescope/telescope-file-browser.nvim",
@@ -17,8 +15,29 @@ return {
       build = "make",
     },
   },
+  keys = {
+    { "<leader>bl", "<Cmd>lua require('telescope.builtin').buffers()<CR>", desc = "List buffers" },
+    { "<leader>ff", "<Cmd>lua require('telescope.builtin').find_files()<CR>", desc = "Find Files" },
+    { "<leader>fr", "<cmd>Telescope old_files<cr>", desc = "Previously open files" },
+    { "<leader>fb", "<cmd>Telescope file_browser<cr>", desc = "Browser" },
+    { "<leader>fz", "<cmd>Telescope zoxide list<cr>", desc = "Zoxide" },
+    { "<leader>hc", "<cmd>lua require('telescope.builtin').commands()<cr>", desc = "Commands" },
+    { "<leader>hk", "<cmd>lua require('telescope.builtin').keymaps()<cr>", desc = "Keymaps" },
+    { "<leader>ht", "<cmd>lua require('telescope.builtin').help_tags()<cr>", desc = "Help tags" },
+    { "<leader>hm", "<cmd>lua require('telescope.builtin').man_pages()<cr>", desc = "Man pages" },
+    { "<leader>sb", "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>", desc = "Buffer" },
+    { "<leader>sw", "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "Workspace" },
+    { "<leader>ps", "<cmd>Telescope repo list<cr>", desc = "Search" },
+    { "<leader>pp", "<cmd>Telescope project<cr>", desc = "List" },
+    { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "Files" },
+    { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Commits" },
+    { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Branches" },
+    { "<leader>df", "<cmd>Telescope dap frames<cr>", desc = "Frames" },
+    { "<leader>dT", "<cmd>Telescope dap list_breakpoints<cr>", desc = "List breakboints" },
+    { "<leader>dv", "<cmd>Telescope dap variables<cr>", desc = "Variables" },
+  },
   config = function()
-    telescope = require("telescope")
+    local telescope = require("telescope")
     telescope.setup({
       defaults = {
         mappings = {
