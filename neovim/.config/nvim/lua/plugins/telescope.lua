@@ -37,8 +37,49 @@ return {
     { "<leader>dv", "<cmd>Telescope dap variables<cr>", desc = "Variables" },
   },
   config = function()
+    local transform_mod = require("telescope.actions.mt").transform_mod
+    local nvb_actions = transform_mod({
+      -- VisiData
+      visidata = function(prompt_bufnr)
+        -- Get the full path
+        local content = require("telescope.actions.state").get_selected_entry()
+        local full_path = content.cwd .. require("plenary.path").path.sep .. content.value
+
+        -- Close the Telescope window
+        require("telescope.actions").close(prompt_bufnr)
+
+        -- Open the file with VisiData
+        local term = require("utils")
+        term.open_term("vd " .. full_path, { direction = "float" })
+      end,
+    })
+
     local telescope = require("telescope")
     telescope.setup({
+      pickers = {
+        find_files = {
+          theme = "ivy",
+          mappings = {
+            n = {
+              ["s"] = nvb_actions.visidata,
+            },
+            i = {
+              ["<C-s>"] = nvb_actions.visidata,
+            },
+          },
+        },
+        git_files = {
+          theme = "dropdown",
+          mappings = {
+            n = {
+              ["s"] = nvb_actions.visidata,
+            },
+            i = {
+              ["<C-s>"] = nvb_actions.visidata,
+            },
+          },
+        },
+      },
       defaults = {
         mappings = {
           i = {

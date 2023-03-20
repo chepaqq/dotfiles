@@ -1,3 +1,4 @@
+M = {}
 local status_ok, terminal = pcall(require, "toggleterm.terminal")
 if not status_ok then
   return
@@ -93,12 +94,12 @@ local file_type = ""
 local lang = ""
 
 local function default_on_open(term)
-  vim.cmd "stopinsert"
+  vim.cmd("stopinsert")
   vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
 end
 
 local function cht_on_open(term)
-  vim.cmd "stopinsert"
+  vim.cmd("stopinsert")
   vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
   vim.api.nvim_buf_set_name(term.bufnr, "cheatsheet-" .. term.bufnr)
   vim.api.nvim_buf_set_option(term.bufnr, "filetype", "cheat")
@@ -106,16 +107,16 @@ local function cht_on_open(term)
 end
 
 local function cht_on_exit(_)
-  vim.cmd [[normal gg]]
+  vim.cmd([[normal gg]])
 end
-local function open_term(cmd, opts)
+function M.open_term(cmd, opts)
   opts = opts or {}
   opts.size = opts.size or vim.o.columns * 0.5
   opts.direction = opts.direction or "float"
   opts.on_open = opts.on_open or default_on_open
   opts.on_exit = opts.on_exit or nil
 
-  local new_term = Terminal:new {
+  local new_term = Terminal:new({
     cmd = cmd,
     dir = "git_dir",
     auto_scroll = false,
@@ -123,7 +124,7 @@ local function open_term(cmd, opts)
     start_in_insert = false,
     on_open = opts.on_open,
     on_exit = opts.on_exit,
-  }
+  })
   new_term:open(opts.size, opts.direction)
 end
 
@@ -157,7 +158,7 @@ local function cht()
       end
     end
     cmd = "curl cht.sh/" .. cmd
-    open_term(cmd, { direction = "vertical", on_open = cht_on_open, on_exit = cht_on_exit })
+    M.open_term(cmd, { direction = "vertical", on_open = cht_on_open, on_exit = cht_on_exit })
   end)
 end
 
@@ -175,10 +176,9 @@ local function so()
       cmd = input
     end
     cmd = "so " .. cmd
-    open_term(cmd, { direction = "float" })
+    M.open_term(cmd, { direction = "float" })
   end)
 end
-
 
 vim.keymap.set("n", "<leader>zd", function()
   docker_client_toggle()
@@ -201,3 +201,4 @@ end, { desc = "Stack Overflow", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>sc", function()
   cht()
 end, { desc = "Cheatsheets", noremap = true, silent = true })
+return M
