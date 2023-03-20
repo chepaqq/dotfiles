@@ -29,7 +29,7 @@ return {
     -- Menu
     dashboard.section.buttons.val = {
       dashboard.button("e", "  New file", ":ene <BAR> startinsert<CR>"),
-      dashboard.button("f", "  Find file", ":NvimTreeToggle<CR>"),
+      dashboard.button("f", "  Find file", ":Telescope file_browser<CR>"),
       dashboard.button("s", "  Settings", ":e $MYVIMRC<CR>"),
       dashboard.button("u", "  Update plugins", ":Lazy update<CR>"),
       dashboard.button("q", "  Quit", ":qa<CR>"),
