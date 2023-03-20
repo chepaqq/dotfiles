@@ -23,6 +23,7 @@ return {
         "lua",
         "markdown",
         "markdown_inline",
+        "org",
         "perl",
         "python",
         "rust",
