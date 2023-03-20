@@ -10,7 +10,7 @@ return {
       null_ls.builtins.formatting.beautysh,
       null_ls.builtins.formatting.black,
       null_ls.builtins.formatting.gofumpt,
-      null_ls.builtins.formatting.prettierd,
+      null_ls.builtins.formatting.prettier,
       null_ls.builtins.formatting.sql_formatter,
       null_ls.builtins.code_actions.gitsigns,
       null_ls.builtins.code_actions.gomodifytags,

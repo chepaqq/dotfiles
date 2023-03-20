@@ -19,7 +19,7 @@ local servers = {
   "html-lsp",
   "json-lsp",
   "lua-language-server",
-  "prettierd",
+  "prettier",
   "pyright",
   "rust-analyzer",
   "rustfmt",
