@@ -68,6 +68,7 @@ return {
             nvim_lua = "[Lua]",
             path = "[Path]",
             calc = "[Calc]",
+            orgmode = "[Org]",
           },
         }),
       },
@@ -147,6 +148,7 @@ return {
         { name = "path" },
         { name = "buffer" },
         { name = "calc" },
+        { name = "orgmode" },
       },
     })
 
