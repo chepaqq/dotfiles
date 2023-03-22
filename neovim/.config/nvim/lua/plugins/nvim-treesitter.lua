@@ -10,27 +10,7 @@ return {
   config = function()
     nvim_treesitter = require("nvim-treesitter.configs")
     nvim_treesitter.setup({
-      ensure_installed = {
-        "bash",
-        "c",
-        "cpp",
-        "css",
-        "dockerfile",
-        "go",
-        "gomod",
-        "html",
-        "json",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "org",
-        "perl",
-        "python",
-        "rust",
-        "sql",
-        "toml",
-        "yaml",
-      },
+      ensure_installed = "all",
       autopairs = { enable = true },
       sync_install = false,
       highlight = {
