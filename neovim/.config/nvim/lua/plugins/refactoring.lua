@@ -5,7 +5,24 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
-    opts = {},
+    opts = {
+      prompt_func_return_type = {
+        go = true,
+        cpp = true,
+        c = true,
+        h = true,
+        hpp = true,
+        cxx = true,
+      },
+      prompt_func_param_type = {
+        go = true,
+        cpp = true,
+        c = true,
+        h = true,
+        hpp = true,
+        cxx = true,
+      },
+    },
     config = function(_, opts)
       require("refactoring").setup(opts)
       require("telescope").load_extension("refactoring")
