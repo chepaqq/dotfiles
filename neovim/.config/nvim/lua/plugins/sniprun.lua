@@ -1,14 +1,8 @@
 return {
   {
     "michaelb/sniprun",
-    enabled = true,
+    event = "BufReadPre",
     build = "bash ./install.sh",
-    opts = {
-      display = { "Terminal" },
-      live_display = { "VirtualTextOk", "TerminalOk" },
-      selected_interpreters = { "Python3_fifo" },
-      repl_enable = { "Python3_fifo" },
-    },
     config = function(_, opts)
       require("sniprun").setup(opts)
     end,
