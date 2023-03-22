@@ -5,6 +5,8 @@ if not cmp_status_ok then
   return
 end
 
+require("plugins.lsp.keymaps")
+
 function M.lsp_formatting(bufnr)
   vim.lsp.buf.format({
     filter = function(client)
@@ -59,9 +61,6 @@ M.capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 function M.on_attach(client, bufnr)
-  -- Keymaps
-  require("plugins.lsp.keymaps").setup(client, bufnr)
-
   -- Highlighting
   require("plugins.lsp.highlighter").setup(client, bufnr)
 
