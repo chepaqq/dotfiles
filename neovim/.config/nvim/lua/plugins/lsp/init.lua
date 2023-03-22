@@ -35,8 +35,15 @@ return {
   {
     "glepnir/lspsaga.nvim",
     event = "VeryLazy",
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons" },
+      { "nvim-treesitter/nvim-treesitter" },
+    },
     opts = {
       symbol_in_winbar = {
+        enable = false,
+      },
+      lightbulb = {
         enable = false,
       },
       diagnostic = {
