@@ -31,7 +31,7 @@ return {
     local mappings = {
       D = { name = "Database" },
       b = { name = "Buffer" },
-      c = { name = "Code", r = { name = "Refactor" }, g = { name = "Annotation" }, w = { name = "Workspace" } },
+      c = { name = "Code", R = { name = "Refactor" }, g = { name = "Annotation" }, w = { name = "Workspace" } },
       d = { name = "Debug" },
       f = { name = "Find" },
       g = { name = "Git", h = { name = "Hunk" }, t = { name = "Toggle" } },

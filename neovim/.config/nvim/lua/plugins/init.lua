@@ -35,7 +35,7 @@ return {
     ft = "rust",
     keys = {
       { "<leader>ch", "<cmd>RustHoverActions<cr>", desc = "Hover Actions" },
-      { "<leader>cR", "<cmd>RustRunnables<cr>", desc = "Runnables" },
+      -- { "<leader>cR", "<cmd>RustRunnables<cr>", desc = "Runnables" },
       { "<leader>dl", "<cmd>RustDebuggables<cr>", desc = "Debuggales" },
     },
   },
