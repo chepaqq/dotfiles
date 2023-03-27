@@ -24,9 +24,10 @@ local servers = {
   "rust-analyzer",
   "rustfmt",
   "shellcheck",
-  "sqlls",
   "sql-formatter",
+  "sqlls",
   "stylua",
+  "texlab",
   "yaml-language-server",
 }
 

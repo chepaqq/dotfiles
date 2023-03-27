@@ -100,6 +100,7 @@ local servers = {
   "pyright",
   "rust_analyzer",
   "sqlls",
+  "texlab",
   "yamlls",
 }
 
