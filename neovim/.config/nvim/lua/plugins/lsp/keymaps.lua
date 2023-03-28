@@ -41,25 +41,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set(
       "n",
       "[e",
-      '<cmd>lua require("lspsaga.diagnostic"):goto_pr{ srity = vim.diagnostic.srity.ERROR })<CR>',
+      '<cmd>lua require("lspsaga.diagnostic"):goto_pr{ severity = vim.diagnostic.severity.ERROR })<CR>',
       { buffer = ev.buf, desc = "Prerror" }
     )
     vim.keymap.set(
       "n",
       "]e",
-      '<cmd>lua require("lspsaga.diagnostic"):goto_next({ srity = vim.diagnostic.srity.ERROR })<CR>',
+      '<cmd>lua require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })<CR>',
       { buffer = ev.buf, desc = "Next error" }
     )
     vim.keymap.set(
       "n",
       "[w",
-      '<cmd>lua require("lspsaga.diagnostic"):goto_pr{ srity = vim.diagnostic.srity.WARNING })<CR>',
+      '<cmd>lua require("lspsaga.diagnostic"):goto_pr{ severity = vim.diagnostic.severity.WARNING })<CR>',
       { buffer = ev.buf, desc = "Prwarning" }
     )
     vim.keymap.set(
       "n",
       "]w",
-      '<cmd>lua require("lspsaga.diagnostic"):goto_next({ srity = vim.diagnostic.srity.WARNING })<CR>',
+      '<cmd>lua require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.WARNING })<CR>',
       { buffer = ev.buf, desc = "Next warning" }
     )
 
