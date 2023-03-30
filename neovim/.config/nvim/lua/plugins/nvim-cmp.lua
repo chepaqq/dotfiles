@@ -42,6 +42,7 @@ return {
       "hrsh7th/cmp-nvim-lua",
       "onsails/lspkind.nvim",
       "saadparwaiz1/cmp_luasnip",
+      "amarakon/nvim-cmp-lua-latex-symbols",
     },
   },
   config = function()
@@ -71,6 +72,7 @@ return {
             path = "[Path]",
             calc = "[Calc]",
             orgmode = "[Org]",
+            lua_latex_symbols = "[Latex]",
           },
         }),
       },
@@ -151,7 +153,6 @@ return {
         { name = "path" },
         { name = "buffer" },
         { name = "calc" },
-        { name = "orgmode" },
       },
     })
 
@@ -162,6 +163,16 @@ return {
       ]],
       false
     )
+    require("cmp").setup.filetype({ "tex", "plaintex" }, {
+      sources = {
+        { name = "lua-latex-symbols" },
+      },
+    })
+    require("cmp").setup.filetype({ "org" }, {
+      sources = {
+        { name = "orgmode" },
+      },
+    })
     require("cmp").setup.cmdline(":", {
       mapping = cmp.mapping.preset.cmdline(),
       sources = cmp.config.sources({
