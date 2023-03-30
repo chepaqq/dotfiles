@@ -2,7 +2,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
   build = ":TSUpdate",
-  event = "VeryLazy",
+  event = { "BufReadPost", "BufNewFile" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     "https://gitlab.com/HiPhish/nvim-ts-rainbow2",
@@ -15,6 +15,7 @@ return {
       sync_install = false,
       highlight = {
         enable = true,
+        use_languagetree = true,
       },
       indent = {
         enable = true,
