@@ -4,7 +4,6 @@ return {
   config = function()
     local null_ls = require("null-ls")
     local sources = {
-      null_ls.builtins.completion.luasnip,
       null_ls.builtins.diagnostics.golangci_lint,
       null_ls.builtins.diagnostics.shellcheck,
       null_ls.builtins.formatting.beautysh,
