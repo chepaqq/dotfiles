@@ -65,6 +65,15 @@ opt.wildignore:append("**/.git/*")
 -- Disable nvim intro
 opt.shortmess:append("sI")
 
+-- disable some default providers
+for _, provider in ipairs({ "node", "perl", "python3", "ruby" }) do
+  vim.g["loaded_" .. provider .. "_provider"] = 0
+end
+
+-- add binaries installed by mason.nvim to path
+local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath("data") .. "/mason/bin"
+
 -- Better Netrw
 g.netrw_banner = 0 -- Hide banner
 g.netrw_altv = 1 -- Open with right splitting

@@ -1,5 +1,5 @@
 # PATH
-PATH=$PATH:$HOME/.local/bin/:$HOME/.local/share/nvim/mason/bin/
+PATH=$PATH:$HOME/.local/bin/
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 PATH=$PATH:$GOPATH/bin/
 export PATH
@@ -63,4 +63,3 @@ export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap 
 
 # Start server on tty1
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && startx $XINITRC -- -keeptty vt1 &> /dev/null
-
