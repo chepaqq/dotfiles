@@ -52,6 +52,11 @@ return {
     },
   },
   {
+    "liuchengxu/vista.vim",
+    cmd = "Vista",
+    event = "VeryLazy",
+  },
+  {
     "lvimuser/lsp-inlayhints.nvim",
     event = "BufReadPre",
     config = function()

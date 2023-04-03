@@ -57,7 +57,8 @@ return {
 
   {
     "ray-x/go.nvim",
-    dependencies = { -- optional packages
+    build = ':lua require("go.install").update_all_sync()',
+    dependencies = {
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
