@@ -6,8 +6,8 @@ return {
     local sources = {
       null_ls.builtins.diagnostics.cpplint,
       null_ls.builtins.diagnostics.golangci_lint,
+      null_ls.builtins.diagnostics.staticcheck,
       null_ls.builtins.diagnostics.revive,
-      null_ls.builtins.diagnostics.shellcheck,
       null_ls.builtins.formatting.beautysh,
       null_ls.builtins.formatting.black,
       null_ls.builtins.formatting.gofumpt,
