@@ -77,7 +77,7 @@ return {
       { "<leader>cRi", "<cmd>lua require('refactoring').refactor('Inline Variable')<cR>]", desc = "Inline variable" },
       { "<leader>cRb", "<cmd>lua require('refactoring').refactor('Extract Block')<cR>]", desc = "Extract Block" },
       {
-        "<leader>cRbf",
+        "<leader>cRf",
         "<cmd>lua require('refactoring').refactor('Extract Block To File')<cR>]",
         desc = "Extract Block To File",
       },
