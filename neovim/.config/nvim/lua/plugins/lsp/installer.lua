@@ -8,6 +8,7 @@ local servers = {
   "bash-language-server",
   "beautysh",
   "black",
+  "cpplint",
   "clang-format",
   "clangd",
   "codelldb",
