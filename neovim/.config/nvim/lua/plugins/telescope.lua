@@ -32,9 +32,6 @@ return {
     { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "Files" },
     { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Commits" },
     { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Branches" },
-    { "<leader>df", "<cmd>Telescope dap frames<cr>", desc = "Frames" },
-    { "<leader>dT", "<cmd>Telescope dap list_breakpoints<cr>", desc = "List breakboints" },
-    { "<leader>dv", "<cmd>Telescope dap variables<cr>", desc = "Variables" },
   },
   config = function()
     local transform_mod = require("telescope.actions.mt").transform_mod
