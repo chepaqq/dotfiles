@@ -18,7 +18,7 @@ return {
   keys = {
     { "<leader>bl", "<Cmd>lua require('telescope.builtin').buffers()<CR>", desc = "List buffers" },
     { "<leader>ff", "<Cmd>lua require('telescope.builtin').find_files()<CR>", desc = "Find Files" },
-    { "<leader>fr", "<cmd>Telescope old_files<cr>", desc = "Previously open files" },
+    { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Previously open files" },
     { "<leader>fb", "<cmd>Telescope file_browser<cr>", desc = "Browser" },
     { "<leader>fz", "<cmd>Telescope zoxide list<cr>", desc = "Zoxide" },
     { "<leader>hc", "<cmd>lua require('telescope.builtin').commands()<cr>", desc = "Commands" },
