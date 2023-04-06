@@ -4,7 +4,6 @@ return {
   config = function()
     local null_ls = require("null-ls")
     local sources = {
-      null_ls.builtins.diagnostics.cpplint,
       null_ls.builtins.diagnostics.golangci_lint,
       null_ls.builtins.diagnostics.staticcheck,
       null_ls.builtins.diagnostics.revive,
@@ -19,7 +18,7 @@ return {
       null_ls.builtins.code_actions.shellcheck,
       null_ls.builtins.hover.printenv,
       null_ls.builtins.formatting.clang_format.with({
-        extra_args = { "--style={BasedOnStyle: llvm, IndentWidth: 4}" },
+        extra_args = { "--style={BasedOnStyle: llvm, IndentWidth: 4, UseTab: Always}" },
       }),
       null_ls.builtins.formatting.golines.with({
         extra_args = {

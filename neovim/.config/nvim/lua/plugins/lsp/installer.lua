@@ -11,7 +11,6 @@ local servers = {
   "clang-format",
   "clangd",
   "codelldb",
-  "cpplint",
   "css-lsp",
   "docker-compose-language-service",
   "dockerfile-language-server",
