@@ -1,7 +1,5 @@
 # PATH
 PATH=$PATH:$HOME/.local/bin/
-export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
-PATH=$PATH:$GOPATH/bin/
 export PATH
 # Default programs
 export WM="dwm"
@@ -29,28 +27,30 @@ export XINITRC="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xinitrc"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 
 # Program settings
-export _JAVA_AWT_WM_NONREPARENTING=1	# Fix for Java applications in dwm
-export MOZ_USE_XINPUT2="1"		# Mozilla smooth scrolling/touchpads.
-export MPV_OPTS="--really-quiet"
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export BAT_THEME="gruvbox-dark"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
-export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
+export CM_DEBUG=0
+export CM_MAX_CLIPS=20
+export CM_OUTPUT_CLIP=0
+export CM_SELECTIONS="clipboard"
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GOBIN="$GOPATH/bin"
+export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export GREP_COLORS='mt=1;92;40'
+export LESS='-R'
+export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
 export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
 export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
 export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
-export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
-export LESS='-R'
-export CM_SELECTIONS="clipboard"
-export CM_DEBUG=0
-export CM_OUTPUT_CLIP=0
-export CM_MAX_CLIPS=20
-export BAT_THEME="gruvbox-dark"
+export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export MOZ_USE_XINPUT2="1"		# Mozilla smooth scrolling/touchpads.
 export MPD_HOST=$HOME/.config/mpd/socket
+export MPV_OPTS="--really-quiet"
+export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
+export _JAVA_AWT_WM_NONREPARENTING=1	# Fix for Java applications in dwm
 
 # FZF options
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git --exclude proc"
