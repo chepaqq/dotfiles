@@ -213,7 +213,7 @@ return {
         port = "${port}",
         executable = {
           command = "codelldb",
-          args = { "--port", "${port}" },
+          args = { "--port", "${port}", "--settings", '{"showDisassembly" : "never"}' },
         },
       }
       dap.configurations.cpp = {
@@ -226,6 +226,7 @@ return {
           end,
           cwd = "${workspaceFolder}",
           stopOnEntry = false,
+          runInTerminal = false,
         },
       }
       dap.configurations.c = dap.configurations.cpp
