@@ -22,7 +22,6 @@
 (require 'config-lsp)
 (require 'config-org)
 (require 'config-pairs)
-(require 'config-pdf-tools)
 (require 'config-speedbar)
 (require 'config-term)
 (require 'config-ui)
