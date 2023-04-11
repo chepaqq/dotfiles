@@ -85,10 +85,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.lsp.codelens.refresh()
     end, { buffer = ev.buf, desc = "Refresh codelens" })
     vim.keymap.set("n", "<leader>cf", function()
-      require("lsp.handlers").lsp_formatting()
+      require("plugins.lsp.handlers").lsp_formatting()
     end, { buffer = ev.buf, desc = "Format document" })
     vim.keymap.set("v", "<leader>cf", function()
-      require("lsp.handlers").range_formatting()
+      require("plugins.lsp.handlers").range_formatting()
     end, { buffer = ev.buf, desc = "Format document" })
     vim.keymap.set(
       "n",
