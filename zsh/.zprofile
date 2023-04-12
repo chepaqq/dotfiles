@@ -34,8 +34,8 @@ export CM_MAX_CLIPS=20
 export CM_OUTPUT_CLIP=0
 export CM_SELECTIONS="clipboard"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export GOBIN="$GOPATH/bin"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
+export GOBIN="$GOPATH/bin"
 export GREP_COLORS='mt=1;92;40'
 export LESS='-R'
 export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
