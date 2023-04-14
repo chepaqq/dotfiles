@@ -37,7 +37,7 @@ set noiec
 
 " If you would like to run an executable file when you
 " press return on the file name set this.
-set norunexec
+set runexec
 
 " Set line number
 set number
