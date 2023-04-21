@@ -76,6 +76,13 @@ autocmd("Filetype", {
   command = "setlocal cc=0",
 })
 
+augroup("setSignColumn", { clear = true })
+autocmd("TermEnter", {
+  group = "setSignColumn",
+  pattern = { "term://*toggleterm#*", "term://*" },
+  command = "setlocal signcolumn=no",
+})
+
 -- Exit by q
 autocmd("FileType", {
   pattern = {
