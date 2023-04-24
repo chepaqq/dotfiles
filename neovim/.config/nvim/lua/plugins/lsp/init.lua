@@ -5,7 +5,7 @@ return {
       require("plugins.lsp.servers").setup()
     end,
   },
-  event = "BufReadPre",
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "williamboman/mason.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
