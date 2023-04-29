@@ -37,7 +37,6 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 # void linux
-alias xi='doas xbps-install'
 alias xu='doas xbps-install -Suv'
 alias xr='doas xbps-remove -Rcon'
 alias xs='xbps-query -Rs'
@@ -50,5 +49,5 @@ alias xclr='doas vkpurge rm all && doas rm -rf /var/cache/xbps/*'
 
 # doas not required for some system commands
 for command in mount umount xbps-install xbps-remove xbps-reconfigure sv su shutdown poweroff reboot ; do
-	alias $command="doas $command"
+    alias $command="doas $command"
 done; unset command
