@@ -11,7 +11,7 @@ static       int smartgaps          = 1;        /* 1 means no outer gap when the
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static const int focusonwheel       = 0;
-static const char *fonts[]          = { "Terminus:pixelsize=22:antialias=false:autohint=false", "TerminessTTF Nerd Font:style=Medium:size=10" };
+static const char *fonts[]          = { "Terminus:pixelsize=22:antialias=false:autohint=false", "Terminess Nerd Font:style=Medium:size=10" };
 static const char dmenufont[]       = "Terminus:pixelsize=22:antialias=false:autohint=false";
 static char normbgcolor[]           = "#282828";
 static char normbordercolor[]       = "#3c3836";
