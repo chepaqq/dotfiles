@@ -9,7 +9,7 @@ wlan() {
     ssid=$(iwctl station wlp1s0 show | grep 'Connected network' | awk  '{print $3}')
     case "$(cat /sys/class/net/wlp1s0/operstate)" in
         up) printf %s "直 $ssid" ;;
-        down) printf %s " Disconnected" ;;
+        down) printf %s " Disconnected" ;;
     esac
 }
 
