@@ -1,18 +1,3 @@
-From ac7558081ea5f576ef2ed09c1817d2722baa92fd Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Stanislaw=20H=C3=BCll?= <st@nislaw.de>
-Date: Sun, 21 Feb 2021 10:27:10 +0100
-Subject: [PATCH] dynamicswallow patch
-
----
- Makefile     |   3 +
- config.def.h |   7 +
- dwm.c        | 602 +++++++++++++++++++++++++++++++++++++++++++++++++--
- dwmswallow   | 120 ++++++++++
- util.c       |  30 +++
- util.h       |   1 +
- 6 files changed, 740 insertions(+), 23 deletions(-)
- create mode 100755 dwmswallow
-
 diff --git a/Makefile b/Makefile
 index 77bcbc0..8bd79c8 100644
 --- a/Makefile
@@ -26,21 +11,21 @@ index 77bcbc0..8bd79c8 100644
  	mkdir -p ${DESTDIR}${MANPREFIX}/man1
  	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
  	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
- 
+
  uninstall:
  	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 +		${DESTDIR}${MANPREFIX}/bin/dwmswallow\
  		${DESTDIR}${MANPREFIX}/man1/dwm.1
- 
+
  .PHONY: all options clean dist install uninstall
 diff --git a/config.def.h b/config.def.h
-index 1c0b587..39e07a8 100644
+index 061ad66..7fdf687 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -31,6 +31,11 @@ static const Rule rules[] = {
  	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
  };
- 
+
 +/* window swallowing */
 +static const int swaldecay = 3;
 +static const int swalretroactive = 1;
@@ -49,7 +34,7 @@ index 1c0b587..39e07a8 100644
  /* layout(s) */
  static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
  static const int nmaster     = 1;    /* number of clients in master area */
-@@ -84,6 +89,7 @@ static Key keys[] = {
+@@ -84,6 +89,7 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -57,7 +42,7 @@ index 1c0b587..39e07a8 100644
  	TAGKEYS(                        XK_1,                      0)
  	TAGKEYS(                        XK_2,                      1)
  	TAGKEYS(                        XK_3,                      2)
-@@ -107,6 +113,7 @@ static Button buttons[] = {
+@@ -107,6 +113,7 @@ static const Button buttons[] = {
  	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
  	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
  	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
@@ -65,13 +50,28 @@ index 1c0b587..39e07a8 100644
  	{ ClkTagBar,            0,              Button1,        view,           {0} },
  	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
  	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+diff --git a/config.mk b/config.mk
+index ef8acf7..c4ca787 100644
+--- a/config.mk
++++ b/config.mk
+@@ -27,8 +27,8 @@ LIBS = -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS}
+
+ # flags
+ CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
+-#CFLAGS   = -g -std=c99 -pedantic -Wall -O0 ${INCS} ${CPPFLAGS}
+-CFLAGS   = -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os ${INCS} ${CPPFLAGS}
++CFLAGS   = -g -std=c99 -pedantic -Wall -O0 ${INCS} ${CPPFLAGS}
++#CFLAGS   = -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os ${INCS} ${CPPFLAGS}
+ LDFLAGS  = ${LIBS}
+
+ # Solaris
 diff --git a/dwm.c b/dwm.c
-index 664c527..390ef30 100644
+index e5efb6a..e36d6b5 100644
 --- a/dwm.c
 +++ b/dwm.c
 @@ -58,7 +58,7 @@
  #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
- 
+
  /* enums */
 -enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
 +enum { CurNormal, CurResize, CurMove, CurSwal, CurLast }; /* cursor */
@@ -83,21 +83,21 @@ index 664c527..390ef30 100644
  enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
         ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
 +enum { ClientRegular = 1, ClientSwallowee, ClientSwallower }; /* client types */
- 
+
  typedef union {
  	int i;
 @@ -95,6 +96,7 @@ struct Client {
  	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
  	Client *next;
  	Client *snext;
-+	Client *swallowedby;
++	Client *swer; /* swallower of client, NULL by default */
  	Monitor *mon;
  	Window win;
  };
 @@ -141,6 +143,28 @@ typedef struct {
  	int monitor;
  } Rule;
- 
+
 +typedef struct Swallow Swallow;
 +struct Swallow {
 +	/* Window class name, instance name (WM_CLASS) and title
@@ -147,7 +147,7 @@ index 664c527..390ef30 100644
 +static void swalstopsel(const Arg *unused);
  static void tag(const Arg *arg);
  static void tagmon(const Arg *arg);
- static void tile(Monitor *);
+ static void tile(Monitor *m);
 @@ -229,6 +264,7 @@ static void updatewindowtype(Client *c);
  static void updatewmhints(Client *c);
  static void view(const Arg *arg);
@@ -162,25 +162,20 @@ index 664c527..390ef30 100644
  static Monitor *mons, *selmon;
 +static Swallow *swallows;
  static Window root, wmcheckwin;
- 
+
  /* configuration, allows nested code to access above variables */
-@@ -584,10 +621,12 @@ configurerequest(XEvent *e)
+@@ -587,7 +624,9 @@ configurerequest(XEvent *e)
  	XConfigureRequestEvent *ev = &e->xconfigurerequest;
  	XWindowChanges wc;
- 
+
 -	if ((c = wintoclient(ev->window))) {
--		if (ev->value_mask & CWBorderWidth)
 +	switch (wintoclient2(ev->window, &c, NULL)) {
 +	case ClientRegular: /* fallthrough */
 +	case ClientSwallowee:
-+		if (ev->value_mask & CWBorderWidth) {
+ 		if (ev->value_mask & CWBorderWidth)
  			c->bw = ev->border_width;
--		else if (c->isfloating || !selmon->lt[selmon->sellt]->arrange) {
-+		} else if (c->isfloating || !selmon->lt[selmon->sellt]->arrange) {
- 			m = c->mon;
- 			if (ev->value_mask & CWX) {
- 				c->oldx = c->x;
-@@ -615,7 +654,13 @@ configurerequest(XEvent *e)
+ 		else if (c->isfloating || !selmon->lt[selmon->sellt]->arrange) {
+@@ -618,7 +657,13 @@ configurerequest(XEvent *e)
  				XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w, c->h);
  		} else
  			configure(c);
@@ -195,7 +190,7 @@ index 664c527..390ef30 100644
  		wc.x = ev->x;
  		wc.y = ev->y;
  		wc.width = ev->width;
-@@ -624,6 +669,7 @@ configurerequest(XEvent *e)
+@@ -627,6 +672,7 @@ configurerequest(XEvent *e)
  		wc.sibling = ev->above;
  		wc.stack_mode = ev->detail;
  		XConfigureWindow(dpy, ev->window, ev->value_mask, &wc);
@@ -203,14 +198,14 @@ index 664c527..390ef30 100644
  	}
  	XSync(dpy, False);
  }
-@@ -648,11 +694,30 @@ createmon(void)
+@@ -651,11 +697,30 @@ createmon(void)
  void
  destroynotify(XEvent *e)
  {
 -	Client *c;
 +	Client *c, *swee, *root;
  	XDestroyWindowEvent *ev = &e->xdestroywindow;
- 
+
 -	if ((c = wintoclient(ev->window)))
 +	switch (wintoclient2(ev->window, &c, &root)) {
 +	case ClientRegular:
@@ -226,22 +221,22 @@ index 664c527..390ef30 100644
 +		swalstop(c, root);
 +
 +		/* Cut off the swallow chain before the client. */
-+		for (swee = root; swee->swallowedby != c; swee = swee->swallowedby);
-+		swee->swallowedby = NULL;
++		for (swee = root; swee->swer != c; swee = swee->swer);
++		swee->swer = NULL;
 +
 +		free(c);
 +		updateclientlist();
 +		break;
 +	}
  }
- 
+
  void
-@@ -729,6 +794,12 @@ drawbar(Monitor *m)
+@@ -735,6 +800,12 @@ drawbar(Monitor *m)
  	drw_setscheme(drw, scheme[SchemeNorm]);
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
- 
+
 +	/* Draw swalsymbol next to ltsymbol. */
-+	if (m->sel && m->sel->swallowedby) {
++	if (m->sel && m->sel->swer) {
 +		w = TEXTW(swalsymbol);
 +		x = drw_text(drw, x, 0, w, bh, lrpad / 2, swalsymbol, 0);
 +	}
@@ -249,10 +244,10 @@ index 664c527..390ef30 100644
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
  			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-@@ -781,6 +852,81 @@ expose(XEvent *e)
+@@ -787,6 +858,81 @@ expose(XEvent *e)
  		drawbar(m);
  }
- 
+
 +int
 +fakesignal(void)
 +{
@@ -331,7 +326,7 @@ index 664c527..390ef30 100644
  void
  focus(Client *c)
  {
-@@ -1090,15 +1236,37 @@ mappingnotify(XEvent *e)
+@@ -1092,13 +1238,35 @@ mappingnotify(XEvent *e)
  void
  maprequest(XEvent *e)
  {
@@ -339,10 +334,8 @@ index 664c527..390ef30 100644
  	static XWindowAttributes wa;
  	XMapRequestEvent *ev = &e->xmaprequest;
 +	Swallow *s;
- 
- 	if (!XGetWindowAttributes(dpy, ev->window, &wa))
- 		return;
- 	if (wa.override_redirect)
+
+ 	if (!XGetWindowAttributes(dpy, ev->window, &wa) || wa.override_redirect)
  		return;
 -	if (!wintoclient(ev->window))
 -		manage(ev->window, &wa);
@@ -353,7 +346,7 @@ index 664c527..390ef30 100644
 +		break;
 +	case ClientSwallower:
 +		/* Remapping a swallower will simply stop the swallow. */
-+		for (swee = root; swee->swallowedby != c; swee = swee->swallowedby);
++		for (swee = root; swee->swer != c; swee = swee->swer);
 +		swalstop(swee, root);
 +		break;
 +	default:
@@ -369,7 +362,7 @@ index 664c527..390ef30 100644
 +	if (swaldecay)
 +		swaldecayby(1);
  }
- 
+
  void
 @@ -1214,11 +1382,13 @@ propertynotify(XEvent *e)
  {
@@ -377,7 +370,7 @@ index 664c527..390ef30 100644
  	Window trans;
 +	Swallow *s;
  	XPropertyEvent *ev = &e->xproperty;
- 
+
 -	if ((ev->window == root) && (ev->atom == XA_WM_NAME))
 -		updatestatus();
 -	else if (ev->state == PropertyDelete)
@@ -406,10 +399,10 @@ index 664c527..390ef30 100644
  	/* init appearance */
  	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
  	for (i = 0; i < LENGTH(colors); i++)
-@@ -1653,6 +1827,331 @@ spawn(const Arg *arg)
+@@ -1648,6 +1822,326 @@ spawn(const Arg *arg)
  	}
  }
- 
+
 +/*
 + * Perform immediate swallow of client 'swee' by client 'swer'. 'manage' shall
 + * be set if swal() is called from swalmanage(). 'swer' and 'swee' must be
@@ -420,6 +413,10 @@ index 664c527..390ef30 100644
 +{
 +	Client *c, **pc;
 +	int sweefocused = selmon->sel == swee;
++
++	/* No self-swallowing! */
++	if (swer == swee)
++		return;
 +
 +	/* Remove any swallows registered for the swer. Asking a swallower to
 +	 * swallow another window is ambiguous and is thus avoided altogether. In
@@ -453,8 +450,8 @@ index 664c527..390ef30 100644
 +	}
 +	swee->tags = swer->tags;
 +	swee->isfloating = swer->isfloating;
-+	for (c = swee; c->swallowedby; c = c->swallowedby);
-+	c->swallowedby = swer;
++	for (c = swee; c->swer; c = c->swer);
++	c->swer = swer;
 +
 +	/* Configure geometry params obtained from patches (e.g. cfacts) here. */
 +	// swee->cfact = swer->cfact;
@@ -477,33 +474,26 @@ index 664c527..390ef30 100644
 +}
 +
 +/*
-+ * Register a future swallow with swallower. 'c' 'class', 'inst' and 'title'
-+ * shall point null-terminated strings or be NULL, implying a wildcard. If an
-+ * already existing swallow instance targets 'c' its filters are updated and no
-+ * new swallow instance is created. 'c' may be ClientRegular or ClientSwallowee.
++ * Register a future swallow with swallower 'c'. 'class', 'inst' and 'title'
++ * shall point null-terminated strings and must not be NULL. If an already
++ * existing swallow instance targets 'c' its filters are updated and no new
++ * swallow instance is created. 'c' may be ClientRegular or ClientSwallowee.
 + * Complement to swalrm().
 + */
-+void swalreg(Client *c, const char *class, const char *inst, const char *title)
++void
++swalreg(Client *c, const char *class, const char *inst, const char *title)
 +{
 +	Swallow *s;
 +
 +	if (!c)
 +		return;
 +
++	/* Update existing swallow */
 +	for (s = swallows; s; s = s->next) {
 +		if (s->client == c) {
-+			if (class)
-+				strncpy(s->class, class, sizeof(s->class) - 1);
-+			else
-+				s->class[0] = '\0';
-+			if (inst)
-+				strncpy(s->inst, inst, sizeof(s->inst) - 1);
-+			else
-+				s->inst[0] = '\0';
-+			if (title)
-+				strncpy(s->title, title, sizeof(s->title) - 1);
-+			else
-+				s->title[0] = '\0';
++			strncpy(s->class, class, sizeof(s->class) - 1);
++			strncpy(s->inst, inst, sizeof(s->inst) - 1);
++			strncpy(s->title, title, sizeof(s->title) - 1);
 +			s->decay = swaldecay;
 +
 +			/* Only one swallow per client. May return after first hit. */
@@ -514,12 +504,9 @@ index 664c527..390ef30 100644
 +	s = ecalloc(1, sizeof(Swallow));
 +	s->decay = swaldecay;
 +	s->client = c;
-+	if (class)
-+		strncpy(s->class, class, sizeof(s->class) - 1);
-+	if (inst)
-+		strncpy(s->inst, inst, sizeof(s->inst) - 1);
-+	if (title)
-+		strncpy(s->title, title, sizeof(s->title) - 1);
++	strncpy(s->class, class, sizeof(s->class) - 1);
++	strncpy(s->inst, inst, sizeof(s->inst) - 1);
++	strncpy(s->title, title, sizeof(s->title) - 1);
 +
 +	s->next = swallows;
 +	swallows = s;
@@ -647,7 +634,7 @@ index 664c527..390ef30 100644
 +
 +/*
 + * Delete swallow instance swallows and free its resources. Complement to
-+ * swalreg(). If NULL is passed all swallows are deleted from.
++ * swalreg(). If NULL is passed all registered swallows are deleted.
 + */
 +void
 +swalrm(Swallow *s)
@@ -671,7 +658,8 @@ index 664c527..390ef30 100644
 +/*
 + * Removes swallow instance targeting 'c' if it exists. Complement to swalreg().
 + */
-+void swalunreg(Client *c) { Swallow *s;
++void
++swalunreg(Client *c) { Swallow *s;
 +
 +	for (s = swallows; s; s = s->next) {
 +		if (c == s->client) {
@@ -692,10 +680,10 @@ index 664c527..390ef30 100644
 +{
 +	Client *swer;
 +
-+	if (!swee || !(swer = swee->swallowedby))
++	if (!swee || !(swer = swee->swer))
 +		return;
 +
-+	swee->swallowedby = NULL;
++	swee->swer = NULL;
 +	root = root ? root : swee;
 +	swer->mon = root->mon;
 +	swer->tags = root->tags;
@@ -738,25 +726,12 @@ index 664c527..390ef30 100644
  void
  tag(const Arg *arg)
  {
-@@ -1768,6 +2267,9 @@ unmanage(Client *c, int destroyed)
- 	Monitor *m = c->mon;
- 	XWindowChanges wc;
- 
-+	/* Remove all swallow instances targeting client. */
-+	swalunreg(c);
-+
- 	detach(c);
- 	detachstack(c);
- 	if (!destroyed) {
-@@ -1790,14 +2292,27 @@ unmanage(Client *c, int destroyed)
- void
- unmapnotify(XEvent *e)
+@@ -1788,12 +2282,24 @@ unmapnotify(XEvent *e)
  {
-+
  	Client *c;
  	XUnmapEvent *ev = &e->xunmap;
 +	int type;
- 
+
 -	if ((c = wintoclient(ev->window))) {
 -		if (ev->send_event)
 -			setclientstate(c, WithdrawnState);
@@ -780,15 +755,15 @@ index 664c527..390ef30 100644
 +		break;
  	}
  }
- 
-@@ -1839,15 +2354,19 @@ updatebarpos(Monitor *m)
+
+@@ -1835,15 +2341,19 @@ updatebarpos(Monitor *m)
  void
  updateclientlist()
  {
 -	Client *c;
 +	Client *c, *d;
  	Monitor *m;
- 
+
  	XDeleteProperty(dpy, root, netatom[NetClientList]);
 -	for (m = mons; m; m = m->next)
 -		for (c = m->clients; c; c = c->next)
@@ -797,7 +772,7 @@ index 664c527..390ef30 100644
 -				(unsigned char *) &(c->win), 1);
 +	for (m = mons; m; m = m->next) {
 +		for (c = m->clients; c; c = c->next) {
-+			for (d = c; d; d = d->swallowedby) {
++			for (d = c; d; d = d->swer) {
 +				XChangeProperty(dpy, root, netatom[NetClientList],
 +					XA_WINDOW, 32, PropModeAppend,
 +					(unsigned char *) &(c->win), 1);
@@ -805,12 +780,12 @@ index 664c527..390ef30 100644
 +		}
 +	}
  }
- 
+
  int
-@@ -2060,6 +2579,43 @@ wintoclient(Window w)
+@@ -2057,6 +2567,43 @@ wintoclient(Window w)
  	return NULL;
  }
- 
+
 +/*
 + * Writes client managing window 'w' into 'pc' and returns type of client. If
 + * no client is found NULL is written to 'pc' and zero is returned. If a client
@@ -827,13 +802,13 @@ index 664c527..390ef30 100644
 +		for (c = m->clients; c; c = c->next) {
 +			if (c->win == w) {
 +				*pc = c;
-+				if (c->swallowedby)
++				if (c->swer)
 +					return ClientSwallowee;
 +				else
 +					return ClientRegular;
 +			}
 +			else {
-+				for (d = c->swallowedby; d; d = d->swallowedby) {
++				for (d = c->swer; d; d = d->swer) {
 +					if (d->win == w) {
 +						if (proot)
 +							*proot = c;
@@ -853,7 +828,7 @@ index 664c527..390ef30 100644
  {
 diff --git a/dwmswallow b/dwmswallow
 new file mode 100755
-index 0000000..9400606
+index 0000000..eaab3bb
 --- /dev/null
 +++ b/dwmswallow
 @@ -0,0 +1,120 @@
@@ -864,7 +839,7 @@ index 0000000..9400606
 +PREFIX='#!'
 +
 +# Asserts that all arguments are valid X11 window IDs, i.e. positive integers.
-+# For the purpose of this script 0 is declared invalid aswe
++# For the purpose of this script 0 is declared invalid.
 +is_winid() {
 +	while :; do
 +		# Given input incompatible to %d, some implementations of printf return
@@ -978,14 +953,13 @@ index 0000000..9400606
 +	fi
 +esac
 diff --git a/util.c b/util.c
-index fe044fc..1f51877 100644
+index 96b82c9..7fd825e 100644
 --- a/util.c
 +++ b/util.c
-@@ -33,3 +33,33 @@ die(const char *fmt, ...) {
- 
+@@ -25,6 +25,36 @@ die(const char *fmt, ...)
  	exit(1);
  }
-+
+
 +/*
 + * Splits a string into segments according to a separator. A '\0' is written to
 + * the end of every segment. The beginning of every segment is written to
@@ -1015,15 +989,16 @@ index fe044fc..1f51877 100644
 +	}
 +	return count;
 +}
++
+ void *
+ ecalloc(size_t nmemb, size_t size)
+ {
 diff --git a/util.h b/util.h
 index f633b51..670345f 100644
 --- a/util.h
 +++ b/util.h
 @@ -6,3 +6,4 @@
- 
+
  void die(const char *fmt, ...);
  void *ecalloc(size_t nmemb, size_t size);
 +size_t split(char *s, const char* sep, char **pbegin, size_t maxcount);
--- 
-2.25.1
-

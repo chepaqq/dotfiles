@@ -25,16 +25,6 @@ die(const char *fmt, ...)
 	exit(1);
 }
 
-void *
-ecalloc(size_t nmemb, size_t size)
-{
-	void *p;
-
-	if (!(p = calloc(nmemb, size)))
-		die("calloc:");
-	return p;
-}
-
 /*
  * Splits a string into segments according to a separator. A '\0' is written to
  * the end of every segment. The beginning of every segment is written to
@@ -63,4 +53,14 @@ split(char *s, const char* sep, char **pbegin, size_t maxcount) {
 		count++;
 	}
 	return count;
+}
+
+void *
+ecalloc(size_t nmemb, size_t size)
+{
+	void *p;
+
+	if (!(p = calloc(nmemb, size)))
+		die("calloc:");
+	return p;
 }
