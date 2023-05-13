@@ -68,14 +68,6 @@ autocmd({ "InsertEnter", "WinLeave" }, {
 -- Settings for filetypes:
 --------------------------
 
--- Disable line length marker
-augroup("setLineLength", { clear = true })
-autocmd("Filetype", {
-  group = "setLineLength",
-  pattern = { "text", "markdown", "html", "xhtml", "javascript", "typescript" },
-  command = "setlocal cc=0",
-})
-
 augroup("setSignColumn", { clear = true })
 autocmd("TermEnter", {
   group = "setSignColumn",

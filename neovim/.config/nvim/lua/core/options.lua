@@ -20,7 +20,6 @@ opt.whichwrap:append("<>[]hl")
 opt.number = true -- Show line number
 opt.relativenumber = true -- Show relative number
 opt.showmatch = true -- Highlight matching parenthesis
-opt.colorcolumn = "80" -- Line lenght marker at 80 columns
 opt.showmode = false
 opt.signcolumn = "yes"
 opt.splitright = true -- Vertical split to the right
