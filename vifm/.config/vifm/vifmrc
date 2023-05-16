@@ -281,8 +281,8 @@ fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
 
 " Web
 filextype {*.xhtml,*.html,*.htm},<text/html>
-        \ {Open with librewolf}
-        \ dwmswallow $WINDOWID; librewolf %f &,
+        \ {Open with firefox}
+        \ firefox %f -new-window &,
 fileview {*.xhtml,*.html,*.htm},<text/html> lynx -dump
 
 " Json

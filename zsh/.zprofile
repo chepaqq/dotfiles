@@ -8,7 +8,7 @@ export OPENER="xdg-open"
 export PAGER="less"
 export EDITOR="nvim"
 export DIFFTOOL="nvim -d"
-export BROWSER="librewolf"
+export BROWSER="firefox"
 
 # Clean home directory
 export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
