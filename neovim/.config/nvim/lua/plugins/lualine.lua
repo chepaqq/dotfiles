@@ -9,7 +9,6 @@ return {
   },
   config = function()
     local lualine = require("lualine")
-    local navic = require("nvim-navic")
     lualine.setup({
       options = {
         theme = "gruvbox-material",
@@ -33,7 +32,7 @@ return {
       },
       extensions = { "nvim-tree", "toggleterm", "fugitive", "nvim-dap-ui" },
       winbar = {
-        lualine_c = { navic.get_location },
+        lualine_c = { "navic" },
       },
     })
   end,
