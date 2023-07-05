@@ -33,7 +33,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set(
       "n",
       "<leader>e",
-      "<cmd>Lspsaga show_line_diagnostics<CR>",
+      "<cmd>lua vim.diagnostic.open_float()<CR>",
       { buffer = ev.buf, desc = "Line diagnostic" }
     )
     vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prcr>", { buffer = ev.buf, desc = "Prdiagnostic" })

@@ -43,19 +43,19 @@ local opts = {
     commands = {
       ClangdSwitchSourceHeader = {
         function()
-          switch_source_header_splitcmd(0, "edit")
+          require("plugins.lsp.handlers").switch_source_header_splitcmd(0, "edit")
         end,
         description = "Open source/header in current buffer",
       },
       ClangdSwitchSourceHeaderVSplit = {
         function()
-          switch_source_header_splitcmd(0, "vsplit")
+          require("plugins.lsp.handlers").switch_source_header_splitcmd(0, "vsplit")
         end,
         description = "Open source/header in a new vsplit",
       },
       ClangdSwitchSourceHeaderSplit = {
         function()
-          switch_source_header_splitcmd(0, "split")
+          require("plugins.lsp.handlers").switch_source_header_splitcmd(0, "split")
         end,
         description = "Open source/header in a new split",
       },
