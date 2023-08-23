@@ -75,7 +75,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, { buffer = ev.buf, desc = "List workspaces" })
 
     vim.keymap.set("n", "<leader>cr", "<cmd>Lspsaga rename ++project<CR>", { buffer = ev.buf, desc = "Rename" })
-    vim.keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", { buffer = ev.buf, desc = "Code action" })
+    vim.keymap.set("n", "<leader>ca", "<cmd>CodeActionMenu<CR>", { buffer = ev.buf, desc = "Code action" })
     vim.keymap.set("n", "<leader>co", "<cmd>Vista!!<CR>", { buffer = ev.buf, desc = "Outline" })
     vim.keymap.set("v", "<leader>ca", "<cmd>Lspsaga code_action<CR>", { buffer = ev.buf, desc = "Code action" })
     vim.keymap.set("n", "<leader>cl", function()
