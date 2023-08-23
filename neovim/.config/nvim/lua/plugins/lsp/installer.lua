@@ -21,7 +21,6 @@ local servers = {
   "prettier",
   "pyright",
   "revive",
-  "rust-analyzer",
   "shellcheck",
   "sql-formatter",
   "staticcheck",
