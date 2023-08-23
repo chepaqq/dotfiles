@@ -76,5 +76,5 @@ return {
       })
     end,
   },
-  { "j-hui/fidget.nvim", config = true, lazy = false },
+  { "j-hui/fidget.nvim", config = true, lazy = false, tag = "legacy" },
 }
