@@ -75,4 +75,5 @@ return {
       { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "UndoTree" },
     },
   },
+  { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
 }
