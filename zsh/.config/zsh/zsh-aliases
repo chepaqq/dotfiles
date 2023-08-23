@@ -36,7 +36,6 @@ alias untar='tar xvf'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias md='mkdir -pv && cd "$_'
 # void linux
 alias xu='doas xbps-install -Suv'
 alias xr='doas xbps-remove -Rcon'
