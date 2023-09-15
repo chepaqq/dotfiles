@@ -9,6 +9,7 @@ return {
       null_ls.builtins.code_actions.impl,
       null_ls.builtins.code_actions.refactoring,
       null_ls.builtins.code_actions.shellcheck,
+      null_ls.builtins.diagnostics.buf,
       null_ls.builtins.diagnostics.golangci_lint,
       null_ls.builtins.diagnostics.revive,
       null_ls.builtins.formatting.beautysh,
@@ -23,7 +24,7 @@ return {
       }),
       null_ls.builtins.formatting.golines.with({
         extra_args = {
-          "--max-len=100",
+          "--max-len=180",
           "--base-formatter=gofumpt",
         },
       }),

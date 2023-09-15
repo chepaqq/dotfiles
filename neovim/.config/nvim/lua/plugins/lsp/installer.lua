@@ -8,6 +8,8 @@ local servers = {
   "bash-language-server",
   "beautysh",
   "black",
+  "buf",
+  "buf-language-server",
   "clang-format",
   "clangd",
   "codelldb",
@@ -25,6 +27,7 @@ local servers = {
   "sql-formatter",
   "staticcheck",
   "stylua",
+  "terraform-ls",
   "texlab",
   "yaml-language-server",
 }
