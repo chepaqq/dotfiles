@@ -11,7 +11,7 @@ local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 local opts = {
   gopls = {
     lsp_inlay_hints = { enable = false },
-    lsp_diag_virtual_text = false,
+    diagnostic = { virtual_text = false },
     lsp_on_attach = require("plugins.lsp.handlers").on_attach,
     lsp_document_formatting = false,
     lsp_cfg = {
