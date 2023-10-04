@@ -26,10 +26,11 @@ if [ -f "$usermodmap" ]; then
 fi
 
 if command -v dbus-launch >/dev/null && test -z "${DBUS_SESSION_BUS_ADDRESS}"; then
-       eval "$(dbus-launch --sh-syntax --exit-with-session)"
+    eval "$(dbus-launch --sh-syntax --exit-with-session)"
 fi
 
 xwallpaper --daemon --zoom "$HOME/.local/share/wallpapers/wall_secondary.png" &
+xrandr --output HDMI-A-0 --auto --left-of eDP
 runsvdir ~/.config/runit/runsvdir &
 blueman-applet &
 devmon &
