@@ -5,10 +5,40 @@ return {
   event = { "BufReadPost", "BufNewFile" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
-    "https://gitlab.com/HiPhish/nvim-ts-rainbow2",
+    {
+      "HiPhish/rainbow-delimiters.nvim",
+      config = function()
+        -- This module contains a number of default definitions
+        local rainbow_delimiters = require("rainbow-delimiters")
+
+        vim.g.rainbow_delimiters = {
+          strategy = {
+            [""] = rainbow_delimiters.strategy["global"],
+            vim = rainbow_delimiters.strategy["local"],
+          },
+          query = {
+            [""] = "rainbow-delimiters",
+            lua = "rainbow-blocks",
+          },
+          priority = {
+            [""] = 110,
+            lua = 210,
+          },
+          highlight = {
+            "RainbowDelimiterRed",
+            "RainbowDelimiterYellow",
+            "RainbowDelimiterBlue",
+            "RainbowDelimiterOrange",
+            "RainbowDelimiterGreen",
+            "RainbowDelimiterViolet",
+            "RainbowDelimiterCyan",
+          },
+        }
+      end,
+    },
   },
   config = function()
-    nvim_treesitter = require("nvim-treesitter.configs")
+    local nvim_treesitter = require("nvim-treesitter.configs")
     nvim_treesitter.setup({
       ensure_installed = "all",
       autopairs = { enable = true },
@@ -18,9 +48,6 @@ return {
         use_languagetree = true,
       },
       indent = {
-        enable = true,
-      },
-      rainbow = {
         enable = true,
       },
       incremental_selection = {
