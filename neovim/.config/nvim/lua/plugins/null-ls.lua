@@ -13,17 +13,21 @@ return {
       null_ls.builtins.diagnostics.golangci_lint,
       null_ls.builtins.formatting.beautysh,
       null_ls.builtins.formatting.black,
+      null_ls.builtins.formatting.buf,
       null_ls.builtins.formatting.gofumpt,
       null_ls.builtins.formatting.goimports,
       null_ls.builtins.formatting.prettier,
       null_ls.builtins.formatting.sql_formatter,
       null_ls.builtins.hover.printenv,
       null_ls.builtins.formatting.clang_format.with({
-        extra_args = { "--style={BasedOnStyle: llvm, IndentWidth: 4, UseTab: Never}" },
+        extra_args = {
+          "--style={BasedOnStyle: llvm, IndentWidth: 4, UseTab: Never}",
+        },
+        filetypes = { "c", "cpp", "cs", "java", "cuda" },
       }),
       null_ls.builtins.formatting.golines.with({
         extra_args = {
-          "--max-len=180",
+          "--max-len=120",
           "--base-formatter=gofumpt",
         },
       }),
