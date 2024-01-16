@@ -1,8 +1,9 @@
 return {
-  "ellisonleao/gruvbox.nvim",
+  "catppuccin/nvim",
+  name = "catppuccin",
+  priority = 1000,
   lazy = false,
   config = function()
-    vim.o.background = "dark"
-    vim.cmd([[colorscheme gruvbox]])
+    vim.cmd([[colorscheme catppuccin-frappe]])
   end,
 }
