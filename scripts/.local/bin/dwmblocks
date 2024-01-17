@@ -1,46 +1,94 @@
-#!/bin/sh
+#!/bin/bash
 
-datetime() {
-    time=$(date "+%a %T")
-    printf %s "$time"
+# ^c$var^ = fg color
+# ^b$var^ = bg color
+
+interval=0
+
+# load colors
+black=#1e1e2e
+white=#D9E0EE
+grey=#282737
+purple=#cba6f7
+blue=#96CDFB
+darkblue=#83bae8
+
+pink=#f5c2e7
+mauve=#cba6f7
+red=#f38ba8
+maroon=#eba0ac
+peach=#fab387
+yellow=#f9e2af
+green=#a6e3a1
+
+mem() {
+  printf "^c$blue^^b$black^ "
+  printf "^c$blue^$(free -h | awk '/^Mem/ { print $3 }' | sed s/i//g)"
 }
 
-wlan() {
-    ssid=$(iwctl station wlp1s0 show | grep 'Connected network' | awk  '{print $3}')
-    case "$(cat /sys/class/net/wlp1s0/operstate)" in
-        up) printf %s "直 $ssid" ;;
-        down) printf %s " Disconnected" ;;
-    esac
-}
-
-battery() {
-    case "$(cat /sys/class/power_supply/BAT1/status)" in
-        Charging) icon= ;;
-        Discharging) icon= ;;
-        Full) icon= ;;
-    esac
-    capacity=$(cat /sys/class/power_supply/BAT1/capacity)%
-    printf %s "$icon $capacity"
-}
-
-memory() {
-    memory=$(free -h --si | awk '/^Mem:/ {print $3}')B
-    printf %s "RAM $memory"
-}
-volume() {
+vol() {
     getvolume=$(amixer get Master | tail -1 | awk '{print $5}' | sed 's/[^0-9]*//g')
     mute=$(amixer get Master | tail -1 | awk '{print $6}' | sed 's/[^a-z]*//g')
     if [ "$getvolume" != "" ]; then
         if [ "$getvolume" = 0 ] || [ "$mute" = "off" ]; then
-            printf %s "  Muted"
+            printf "^c$blue^^b$black^  Muted"
         else
-            printf %s "  $getvolume%"
+            printf "^c$blue^^b$black^ "
+            printf "^c$blue^^b$black^$getvolume%%"
         fi
     fi
+}
 
+
+battery() {
+    acpi --ac-adapter | grep 'off' &> /dev/null
+    if [ $? -eq 0 ]
+    then
+        value="$(cat /sys/class/power_supply/BAT1/capacity)"
+
+        if (($value>98))
+        then
+            icon=" "
+        elif (($value>75))
+        then
+            icon=" "
+        elif (($value>40))
+        then
+            icon=" "
+        elif (($value>10))
+        then
+            icon=" "
+        else
+            icon=" "
+        fi
+        printf "^c$green^^b$black^$icon "
+    else
+        printf "^c$green^^b$black^ "
+    fi
+    get_capacity="$(cat /sys/class/power_supply/BAT1/capacity)"
+    printf "^c$green^^b$black^$get_capacity%%"
+}
+
+
+wlan() {
+    ssid=$(iwctl station wlp1s0 show | grep 'Connected network' | awk  '{print $3}')
+    case "$(cat /sys/class/net/wlp1s0/operstate)" in
+    up) printf "^c$red^^b$black^ ^c$red^$ssid" ;;
+	down) printf "^c$red^^b$black^󰤭 ^c$red^Disconnected" ;;
+	esac
+}
+
+day() {
+	printf "^c$yellow^^b$black^ "
+	printf "^c$yellow^^b$black^$(date '+%a %d %B')"
+}
+
+clock() {
+	printf "^c$darkblue^^b$black^ "
+	printf "^c$darkblue^^b$black^$(date '+%T')"
 }
 
 while true; do
-    xsetroot -name "$(wlan) | $(volume) | $(battery) | $(memory) | $(datetime)"
-    sleep 1    # Update time every second
-done &
+    sleep 1
+    xsetroot -name "$(vol)  $(battery)  $(wlan)  $(mem)  $(day)  $(clock) "
+done
