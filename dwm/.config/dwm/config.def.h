@@ -14,9 +14,8 @@ static int smartgaps =
 static int showbar = 1; /* 0 means no bar */
 static int topbar = 1;  /* 0 means bottom bar */
 static const int focusonwheel = 0;
-static const char *fonts[] = {
-    "Terminus:pixelsize=22:antialias=false:autohint=false",
-    "Terminess Nerd Font:style=Medium:size=10"};
+static const char *fonts[] = {"JetBrains Mono:size=10",
+                              "Ubuntu Nerd Font:size=10"};
 static const char dmenufont[] =
     "Terminus:pixelsize=22:antialias=false:autohint=false";
 static char normbgcolor[] = "#282828";
@@ -25,14 +24,42 @@ static char normfgcolor[] = "#ebdbb2";
 static char selfgcolor[] = "#fdf1c7";
 static char selbgcolor[] = "#d79921";
 static char selbordercolor[] = "#d79921";
+static const char black[] = "#1E1D2D";
+static const char gray2[] = "#282737"; // unfocused window border
+static const char gray3[] = "#585767";
+static const char gray4[] = "#282737";
+static const char blue[] = "#96CDFB"; // focused window border
+static const char green[] = "#ABE9B3";
+static const char red[] = "#F28FAD";
+static const char orange[] = "#F8BD96";
+static const char yellow[] = "#FAE3B0";
+static const char pink[] = "#d5aeea";
+static const char col_borderbar[] = "#1E1D2D"; // inner border
+static const char white[] = "#f8f8f2";
 static char *colors[][3] = {
     /*               fg           bg           border   */
-    [SchemeNorm] = {normfgcolor, normbgcolor, normbordercolor},
-    [SchemeSel] = {selfgcolor, selbgcolor, selbordercolor},
+    [SchemeNorm] = {gray3, black, gray2},
+    [SchemeSel] = {gray4, blue, blue},
+    [SchemeTitle] = {white, black, black}, // active window title
 };
 
 /* tagging */
 static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
+static const char *tagsel[][2] = {
+    {blue, black},  {red, black},    {orange, black},
+    {green, black}, {pink, black},   {yellow, black},
+    {white, black}, {orange, black}, {pink, black},
+};
+
+static const unsigned int ulinepad =
+    5; /* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke =
+    2; /* thickness / height of the underline */
+static const unsigned int ulinevoffset =
+    0; /* how far above the bottom of the bar the line should appear */
+static const int ulineall =
+    0; /* 1 to show underline on all tags, 0 for just the active ones */
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -41,7 +68,6 @@ static const Rule rules[] = {
      */
     /* class                instance    title       tags mask     isfloating
        monitor */
-    {"librewolf-default", NULL, NULL, 1 << 0, 0, -1},
     {"Firefox", NULL, NULL, 1 << 0, 0, -1},
     {"TelegramDesktop", NULL, NULL, 1 << 1, 0, -1},
     {"St", NULL, NULL, 1 << 2, 0, -1},
@@ -103,10 +129,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] =
     "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = {
-    "dmenu_run_history", "-m",  dmenumon,    "-fn", dmenufont,      "-nb",
-    normbgcolor,         "-nf", normfgcolor, "-sb", selbordercolor, "-sf",
-    selfgcolor,          NULL};
+static const char *dmenucmd[] = {"dmenu_run_history", NULL};
 static const char *termcmd[] = {"st", NULL};
 static const char *passmenu[] = {"passmenu", NULL};
 static const char *clipmenu[] = {"clipmenu", NULL};
@@ -208,7 +231,6 @@ static const Button buttons[] = {
     /* click                event mask      button          function argument */
     {ClkLtSymbol, 0, Button1, setlayout, {0}},
     {ClkLtSymbol, 0, Button3, setlayout, {.v = &layouts[2]}},
-    {ClkWinTitle, 0, Button2, zoom, {0}},
     {ClkStatusText, 0, Button2, spawn, {.v = termcmd}},
     {ClkClientWin, MODKEY, Button1, movemouse, {0}},
     {ClkClientWin, MODKEY, Button2, togglefloating, {0}},
