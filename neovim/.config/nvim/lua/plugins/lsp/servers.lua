@@ -40,6 +40,7 @@ local opts = {
   clangd = {
     on_attach = require("plugins.lsp.handlers").on_attach,
     capabilities = clang_capabilities,
+    filetypes = { "c", "cpp", "cc", "mpp", "cuda" },
     commands = {
       ClangdSwitchSourceHeader = {
         function()
