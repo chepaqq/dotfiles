@@ -1,5 +1,5 @@
 " Color scheme
-colorscheme gruvbox
+colorscheme dracula
 
 " Devicons
 source $HOME/.config/vifm/favicons.vifm
