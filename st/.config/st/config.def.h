@@ -7,7 +7,7 @@
  */
 static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 /* Spare fonts */
-static char *font2[] = {"DejaVuSansMono Nerd Font:style=Bold:size=10"};
+static char *font2[] = {"Ubuntu Nerd Font:size=10"};
 
 /* disable bold, italic and roman fonts globally */
 int disablebold = 0;
