@@ -17,6 +17,7 @@ local opts = {
     lsp_cfg = {
       capabilities = require("plugins.lsp.handlers").capabilities,
     },
+    lsp_codelens = false,
   },
   rust_analyzer = {
     tools = {
