@@ -1,0 +1,105 @@
+" -- Options --
+set scrolloff=5
+set showmode
+set number
+set incsearch
+set hlsearch
+set undolevels=1000
+set visualbell
+set clipboard+=unnamed
+
+" -- Plugins --
+Plug 'machakann/vim-highlightedyank'
+Plug 'tpope/vim-commentary'
+Plug 'preservim/nerdtree'
+
+" -- Key Mappings --
+
+" Leader Key
+let mapleader = ","
+
+" General Mappings
+inoremap kk <Esc>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :qa!<CR>
+nnoremap <ESC> :nohl<CR>
+nnoremap <leader>R :so %<CR>
+
+" NERDTree
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" Window and Buffer Management
+nnoremap <leader>bd :bd!<Cr>
+nnoremap <leader>bD :%bd|e#|bd#<Cr>
+nnoremap ]b :bnext<CR>
+nnoremap [b :bprevious<CR>
+nnoremap [B :bfirst<CR>
+nnoremap ]B :blast<CR>
+nnoremap <leader>tk <C-w>t<C-w>K
+nnoremap <leader>th <C-w>t<C-w>H
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Text Editing
+nnoremap ]<Space> o<Esc>
+nnoremap [<Space> O<Esc>
+vnoremap < <gv
+vnoremap > >gv
+vnoremap p "_dP
+xnoremap K :move '<-2<CR>gv=gv
+xnoremap J :move '>+1<CR>gv=gv
+
+
+" IDE-like Features
+" Reformat code
+nnoremap <leader>r <Action>(ReformatCode)
+
+" Show error description
+nnoremap <leader>/ <action>(ShowErrorDescription)
+
+" Go to next error
+nnoremap <leader>e <action>(GotoNextError)
+
+" Switch between tabs
+nnoremap <leader><leader> <C-Tab>
+
+" Git menu
+nnoremap <leader>m <action>(Git.Menu)
+
+" Activate terminal tool window
+nnoremap <C-t> :action ActivateTerminalToolWindow<CR>
+
+" Open terminal
+nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
+
+" Go to file
+nnoremap <C-f> :action GotoFile<CR>
+
+" Recent files
+nnoremap <C-r> :action RecentFiles<CR>
+
+" Show hover info
+nnoremap <leader>d :action ShowHoverInfo<CR>
+
+" Show error description (duplicate mapping)
+nnoremap <leader>e :action ShowErrorDescription<CR>
+
+" Debugging commands
+nnoremap <leader>dc :action Debug<CR>
+nnoremap <leader>ds :action Stop<CR>
+nnoremap <leader>db :action ToggleLineBreakpoint<CR>
+
+" Run commands
+nnoremap <leader>rc :action ContextRun<CR>
+nnoremap <leader>rx :action ChooseRunConfiguration<CR>
+nnoremap <leader>rr :action Rerun<CR>
+nnoremap <leader>rt :action RunTests<CR>
+nnoremap <leader>rs :action Stop<CR>
+
+" -- Autocommands --
+autocmd BufWritePre * :%s/\s\+$//e
+autocmd FocusGained * checktime
