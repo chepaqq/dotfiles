@@ -34,14 +34,6 @@ return {
       end,
     },
     {
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      event = "InsertEnter",
-      config = function()
-        require("copilot").setup({})
-      end,
-    },
-    {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
@@ -164,7 +156,6 @@ return {
             return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
           end,
         },
-        { name = "copilot", group_index = 2 },
         { name = "luasnip" },
         { name = "path" },
         { name = "buffer" },

@@ -12,10 +12,6 @@ vim.g.mapleader = ","
 -- Map Esc to kk
 map("i", "kk", "<Esc>")
 
--- Toggle auto-indenting for code paste
-map("n", "<F2>", ":set invpaste paste?<CR>")
-vim.opt.pastetoggle = "<F2>"
-
 -- Visual line wraps
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })

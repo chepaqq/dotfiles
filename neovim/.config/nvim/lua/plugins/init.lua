@@ -31,14 +31,6 @@ return {
   },
 
   {
-    "simrat39/rust-tools.nvim",
-    ft = "rust",
-    keys = {
-      { "<leader>ch", "<cmd>RustHoverActions<cr>", desc = "Hover Actions" },
-    },
-  },
-
-  {
     "kylechui/nvim-surround",
     event = "BufReadPre",
     config = true,
@@ -52,22 +44,6 @@ return {
       require("illuminate").configure(opts)
     end,
   },
-
-  {
-    "ray-x/go.nvim",
-    build = ':lua require("go.install").update_all_sync()',
-    dependencies = {
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("go").setup()
-    end,
-    event = { "CmdlineEnter" },
-    ft = { "go", "gomod" },
-  },
-
   {
     "mbbill/undotree",
     cmd = { "UndotreeToggle" },
