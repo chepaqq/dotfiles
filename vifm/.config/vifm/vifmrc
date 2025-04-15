@@ -28,8 +28,8 @@ set timefmt="%a %F %T"
 " Natural sort of (version) numbers within text.
 set sortnumbers
 
-" If you installed the vim.txt help file set vimhelp.
-" If would rather use a plain text help file set novimhelp.
+" If you installed the nvim.txt help file set nvimhelp.
+" If would rather use a plain text help file set nonvimhelp.
 set novimhelp
 
 " Use KiB, MiB, ... instead of KB, MB, ...
@@ -101,7 +101,6 @@ mark c ~/.config/
 mark d ~/Downloads/
 mark m ~/Music/
 mark p ~/Pictures/
-mark w ~/.local/share/wineprefixes/default
 
 " Bindings
 nnoremap < <C-w>5<
@@ -117,7 +116,6 @@ nnoremap <c-f> :FZFfind<cr>
 nnoremap gb :!git branch | fzf | xargs git checkout <CR>
 nnoremap gl :!git log --graph --abbrev-commit<CR>
 nnoremap ex :extract<CR>
-nnoremap yc :!copy-file %f<CR>
 nmap U :undolist<cr>
 nnoremap ][  :compare listall <cr>
 nnoremap ]]  :diff <cr>
@@ -129,8 +127,8 @@ nmap R :restart<CR>
 " Opening console in current directory
 nmap \t :!st &<cr>
 
-" Opening vim to edit .vifmrc
-nmap \c :execute ':!vim $MYVIFMRC' | restart<cr>
+" Opening nvim to edit .vifmrc
+nmap \c :execute ':!nvim $MYVIFMRC' | restart<cr>
 
 " Mappings for faster renaming
 nmap I cw<c-a>
@@ -179,12 +177,12 @@ nnoremap yr :!echo -n %c:r | xclip -selection clipboard %i<cr>:echo expand('%"c:
 
 " User commands
 command df df -h %m 2> /dev/null
-command diff vim -d %f %F
+command diff nvim -d %f %F
 command link ln -s %d/%f %D
 command run !! ./%f
 command make !!make
 command rm rm %f
-command vgrep vim "+grep %a"
+command vgrep nvim "+grep %a"
 command mkcd :mkdir "%a" | :cd "%a"
 command! dragon dragon -a -x %f &
 command! z :set noquickview | :execute 'cd' fnameescape(system('zoxide query -l "%a" | fzf --height 20 2>/dev/tty')) '%IU' | redraw
@@ -405,3 +403,5 @@ fileview .*/,*/ tree -FLa 3 %f
 " All other files get free syntax highlighting
 " fileview * highlight --out-format=ansi --force -qWJ %pw -t 2 %c
 fileview * bat --pager never --wrap never --color always --theme=gruvbox-dark %c -p
+
+set vicmd=nvim

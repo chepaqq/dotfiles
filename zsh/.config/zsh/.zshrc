@@ -5,7 +5,7 @@
 #/____|____/|_| |_|
 
 
-#useful opts
+# useful opts
 setopt incappendhistory
 setopt autocd extendedglob nomatch menucomplete
 setopt interactive_comments
@@ -35,10 +35,10 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -a -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:z:*' fzf-preview 'exa -a -1 --color=always $realpath'
 zstyle ':fzf-tab:*' switch-group ',' '.'
 eval "$(zoxide init --hook pwd zsh)"
+eval "$(fzf --zsh)"
 
 # Source needed files
 [ -f "$ZDOTDIR/zsh-functions" ] && source $ZDOTDIR/zsh-functions
-zsh_add_file zsh-vim
 zsh_add_file zsh-aliases
 zsh_add_file zsh-bindings
 
@@ -54,3 +54,11 @@ repos=(
     zsh-users/zsh-autosuggestions
 )
 zsh_add_plugin $repos
+
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
